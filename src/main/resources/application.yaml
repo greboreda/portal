@@ -1,0 +1,26 @@
+info:
+  author: greboreda
+  app-name: portal
+
+server:
+  port: 8080
+  #contextPath: /${info.app-name}
+
+spring:
+  application:
+    name: ${info.app-name}
+  main:
+    banner-mode: console
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  datasource:
+    url: jdbc:postgresql://localhost:5432/portal
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  thymeleaf:
+    cache: false
