@@ -4,20 +4,24 @@ import com.greboreda.portal.business.user.domain.role.Role;
 import com.greboreda.portal.business.user.domain.role.RoleId;
 import com.greboreda.portal.business.user.persistence.dbo.RoleDBO;
 
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 public class RoleMapper {
 
 	public static Role map(RoleDBO roleDBO) {
+		final UUID uuid = UUID.fromString(roleDBO.getId());
 		return Role.create()
-				.withId(RoleId.fromUUID(roleDBO.getId()))
+				.withId(RoleId.fromUUID(uuid))
 				.withName(roleDBO.getName())
 				.build();
 	}
 
-	public static Set<Role> map(Set<RoleDBO> roleDBOs) {
+	public static Set<Role> map(List<RoleDBO> roleDBOs) {
 		return roleDBOs.stream()
 				.map(RoleMapper::map)
 				.collect(toSet());
@@ -25,14 +29,14 @@ public class RoleMapper {
 
 	public static RoleDBO mapToDBO(Role role) {
 		final RoleDBO roleDBO = new RoleDBO();
-		roleDBO.setId(role.getId().getUuid());
+		roleDBO.setId(role.getId().getUuid().toString());
 		roleDBO.setName(role.getName());
 		return roleDBO;
 	}
 
-	public static Set<RoleDBO> mapToDBOs(Set<Role> roles) {
+	public static List<RoleDBO> mapToDBOs(Set<Role> roles) {
 		return roles.stream()
 				.map(RoleMapper::mapToDBO)
-				.collect(toSet());
+				.collect(toList());
 	}
 }

@@ -8,20 +8,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-@Table(name = "LOGINSERVICE")
+@Table(name = "loginservice")
 public class LoginServiceDBO implements DataBaseObject {
 
 	private static final long serialVersionUID = 8070416712001564721L;
 
 	@Id
-	private UUID id;
+	private String id;
 
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime creationDate;
@@ -29,7 +28,8 @@ public class LoginServiceDBO implements DataBaseObject {
 	@Column(nullable = false)
 	private LocalDateTime modificationDate;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, optional = false)
+	@JoinColumn(name = "userid")
 	private UserDBO user;
 
 	@Column(nullable = false, updatable = false, unique = true)
@@ -38,11 +38,11 @@ public class LoginServiceDBO implements DataBaseObject {
 	@Column(nullable = false)
 	private String password;
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -10,35 +10,41 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
-@Table(name = "USER_")
+@Table(name = "user_")
 public class UserDBO implements DataBaseObject {
 
 	private static final long serialVersionUID = -6586598193475003115L;
 
 	@Id
-	private UUID id;
+	private String id;
 
 	@Column(updatable = false)
 	private LocalDateTime creationDate;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	@JoinTable(name = "USER_ROLES",
-			joinColumns = {@JoinColumn(name = "ROLEID", referencedColumnName = "ID", nullable = false, updatable = false)},
-			inverseJoinColumns = {@JoinColumn(name = "USERID", referencedColumnName = "ID")})
-	private Set<RoleDBO> roles;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@JoinTable(name = "user_roles",
+			joinColumns = {@JoinColumn(
+					name = "userid",
+					referencedColumnName = "id",
+					nullable = false,
+					updatable = false)},
+			inverseJoinColumns = {@JoinColumn(
+					name = "roleid",
+					referencedColumnName = "id",
+					nullable = false,
+					updatable = false)})
+	private List<RoleDBO> roles;
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -50,11 +56,11 @@ public class UserDBO implements DataBaseObject {
 		this.creationDate = creationDate;
 	}
 
-	public Set<RoleDBO> getRoles() {
+	public List<RoleDBO> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<RoleDBO> roles) {
+	public void setRoles(List<RoleDBO> roles) {
 		this.roles = roles;
 	}
 }

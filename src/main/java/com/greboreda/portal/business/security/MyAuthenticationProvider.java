@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -41,11 +42,11 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		}
 
 		final List<GrantedAuthority> grantedAuthorities = maybeLoginService.get().getUser().getRoles().stream()
-				.map(r -> (GrantedAuthority) r::getName)
+				.map(r -> new SimpleGrantedAuthority(r.getName()))
 				.collect(toList());
 
 		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userName, authentication.getCredentials(), grantedAuthorities);
-		token.setAuthenticated(true);
+		//token.setAuthenticated(true);
 
 		return token;
 	}

@@ -1,34 +1,36 @@
-DROP TABLE IF EXISTS USER_ROLES;
-DROP TABLE IF EXISTS LOGINSERVICE;
-DROP TABLE IF EXISTS ROLE_;
-DROP TABLE IF EXISTS USER_;
+/*
+drop table if exists user_roles;
+drop table if exists loginservice;
+drop table if exists role_;
+drop table if exists user_;
+*/
 
-CREATE TABLE USER_ (
-	ID VARCHAR(36) PRIMARY KEY,
-	CREATIONDATE TIMESTAMP NOT NULL
+create table user_ (
+	id varchar(36) primary key,
+	creationdate timestamp not null
 );
 
-CREATE TABLE ROLE_ (
-	ID VARCHAR(36) PRIMARY KEY,
-	NAME VARCHAR(128) NOT NULL,
-	CONSTRAINT UNIQUE_ROLE_NAME UNIQUE (NAME)
+create table role_ (
+	id varchar(36) primary key,
+	name varchar(128) not null,
+	constraint unique_role_name unique (name)
 );
 
-CREATE TABLE USER_ROLES (
-	USERID VARCHAR(36) NOT NULL,
-	ROLEID VARCHAR(36) NOT NULL,
-	CONSTRAINT FK_USER FOREIGN KEY (USERID) REFERENCES USER_(ID),
-	CONSTRAINT FK_ROLE FOREIGN KEY (ROLEID) REFERENCES ROLE_(ID),
-	CONSTRAINT UNIQUE_USER_ROLE UNIQUE (USERID, ROLEID)
+create table user_roles (
+	userid varchar(36) not null,
+	roleid varchar(36) not null,
+	constraint fk_user foreign key (userid) references user_(id),
+	constraint fk_role foreign key (roleid) references role_(id),
+	constraint unique_user_role unique (userid, roleid)
 );
 
-CREATE TABLE LOGINSERVICE (
-	ID VARCHAR(36) PRIMARY KEY,
-	CREATIONDATE TIMESTAMP NOT NULL,
-	MODIFICATIONDATE TIMESTAMP NOT NULL,
-	USERID VARCHAR(128) NOT NULL,
-	EMAILADDRESS VARCHAR(256) NOT NULL,
-	PASSWORD VARCHAR(128) NOT NULL,
-	CONSTRAINT FK_USER FOREIGN KEY (USERID) REFERENCES USER_(ID),
-	CONSTRAINT UNIQUE_EMAIL_ADDRESS UNIQUE (EMAILADDRESS)
+create table loginservice (
+	id varchar(36) primary key,
+	creationdate timestamp not null,
+	modificationdate timestamp not null,
+	userid varchar(128) not null,
+	emailaddress varchar(256) not null,
+	password varchar(128) not null,
+	constraint fk_user foreign key (userid) references user_(id),
+	constraint unique_email_address unique (emailaddress)
 );

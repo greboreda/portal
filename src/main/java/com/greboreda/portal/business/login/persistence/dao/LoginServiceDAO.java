@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface LoginServiceDAO extends CrudRepository<LoginServiceDBO, UUID> {
 
-	@Query(" select l from LoginServiceDBO as l where l.emailAddress = :emailAddress")
+	@Query(" select l from LoginServiceDBO as l where l.emailAddress = :emailAddress ")
 	Optional<LoginServiceDBO> findByEmailAddress(@Param("emailAddress") String emailAddress);
 
 }
