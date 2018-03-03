@@ -31,32 +31,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 				.authorizeRequests()
-					.antMatchers( "/home").hasAuthority("user")
+					.antMatchers( "/home", "/user").hasAuthority("user")
 					.anyRequest().authenticated()
 					.and().csrf().disable()
 				.formLogin()
 					.loginPage("/login")
 					.permitAll()
+					.defaultSuccessUrl("/user")
 				.and()
 				.logout()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 					.logoutSuccessUrl("/login")
 					.permitAll();
-
-/*		http.authorizeRequests()
-				.antMatchers("/").permitAll()
-				.antMatchers("/login").permitAll()
-				//.antMatchers("/registration").permitAll()
-				.antMatchers("/user/**").hasAuthority("user").anyRequest()
-				.authenticated().and().csrf().disable().formLogin()
-				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/user")
-				.usernameParameter("email")
-				.passwordParameter("password")
-				.and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/login").and().exceptionHandling()
-				.accessDeniedPage("/access-denied");*/
 	}
 
 	@Override

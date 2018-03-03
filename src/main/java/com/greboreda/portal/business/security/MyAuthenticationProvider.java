@@ -5,6 +5,7 @@ import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.vo.EmailAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -36,19 +37,14 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
 		final Optional<LoginService> maybeLoginService = loginPerformer.doLogin(new EmailAddress(userName), password);
 		if(!maybeLoginService.isPresent()) {
-			final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userName, authentication.getCredentials());
-			token.setAuthenticated(false);
-			return token;
+			throw new BadCredentialsException("Can't do login with credentials");
 		}
 
 		final List<GrantedAuthority> grantedAuthorities = maybeLoginService.get().getUser().getRoles().stream()
 				.map(r -> new SimpleGrantedAuthority(r.getName()))
 				.collect(toList());
 
-		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userName, authentication.getCredentials(), grantedAuthorities);
-		//token.setAuthenticated(true);
-
-		return token;
+		return new UsernamePasswordAuthenticationToken(userName, authentication.getCredentials(), grantedAuthorities);
 	}
 
 	@Override

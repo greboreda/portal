@@ -2,9 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>portal user</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap/bootstrap.css}" />
+    <script th:src="@{js/bootstrap.js}"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" lang="en"/>
 </head>
 <body>
-<p>U R IN DA USER SECTION BIATCH</p>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+        <a class="navbar-brand" th:text="${userView.userName}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="${userView.logoutUrl}">logout</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="jumbotron">
+        <h1 class="display-4">U r logged in biatch!</h1>
+    </div>
+
 </body>
 </html>
