@@ -2,6 +2,7 @@ package com.greboreda.portal.config;
 
 import com.greboreda.portal.business.security.MyAuthenticationProvider;
 import com.greboreda.portal.business.security.UserSpringSecurityServiceWrapper;
+import com.greboreda.portal.business.user.domain.role.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,20 +32,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 				.authorizeRequests()
-					.antMatchers( "/home").hasAuthority("user")
-					.anyRequest().authenticated()
-					.antMatchers("/admin/**", "/user/**").hasAuthority("admin")
+					.antMatchers( "/home").hasAuthority(RoleType.USER.getName())
+					.antMatchers("/admin/**", "/user/**").hasAuthority(RoleType.ADMIN.getName())
 					.anyRequest().authenticated()
 					.and()
 				.formLogin()
 					.loginPage("/login")
 					.permitAll()
 					.defaultSuccessUrl("/home")
-				.and()
+					.and()
 				.logout()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 					.logoutSuccessUrl("/login")
-					.permitAll();
+					.permitAll()
+					.and()
+				.exceptionHandling()
+					.accessDeniedPage("/login");
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class AdminController {
 		return "admin";
 	}
 
-	@PreAuthorize("hasRole('admin')")
+	//@PreAuthorize("hasRole('admin')")
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String createUser(@ModelAttribute("userToCreate") UserToCreateDTO userToCreate) {
 
