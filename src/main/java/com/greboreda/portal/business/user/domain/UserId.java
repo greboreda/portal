@@ -23,6 +23,11 @@ public class UserId implements Id {
 		return uuid;
 	}
 
+	@Override
+	public String toString() {
+		return uuid.toString();
+	}
+
 	public static UserId fromUUID(UUID uuid) {
 		return new UserId(uuid);
 	}

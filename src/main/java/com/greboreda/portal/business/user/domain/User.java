@@ -14,17 +14,14 @@ public class User implements Entity<UserId> {
 	private final UserId id;
 	private final LocalDateTime creationDate;
 	private final Set<Role> roles;
-	private final LoginService loginService;
 
-	private User(UserId id, LocalDateTime creationDate, Set<Role> roles, LoginService loginService) {
+	private User(UserId id, LocalDateTime creationDate, Set<Role> roles) {
 		Validate.notNull(id);
 		Validate.notNull(creationDate);
 		Validate.notNull(roles);
-		Validate.notNull(loginService);
 		this.id = id;
 		this.creationDate = creationDate;
 		this.roles = roles;
-		this.loginService = loginService;
 	}
 
 	@Override
@@ -40,10 +37,6 @@ public class User implements Entity<UserId> {
 		return Collections.unmodifiableSet(roles);
 	}
 
-	public LoginService getLoginService() {
-		return loginService;
-	}
-
 	public static UserBuilder create() {
 		return new UserBuilder();
 	}
@@ -56,11 +49,7 @@ public class User implements Entity<UserId> {
 		}
 		@FunctionalInterface
 		public interface AddRoles {
-			AddLogin withRoles(Set<Role> roles);
-		}
-		@FunctionalInterface
-		public interface AddLogin {
-			Builder withLogin(LoginService loginService);
+			Builder withRoles(Set<Role> roles);
 		}
 		@FunctionalInterface
 		public interface Builder {
@@ -72,7 +61,7 @@ public class User implements Entity<UserId> {
 		}
 
 		public AddCreationDate withId(UserId id) {
-			return creationDate -> roles -> login -> () -> new User(id, creationDate, roles, login);
+			return creationDate -> roles -> () -> new User(id, creationDate, roles);
 		}
 
 	}

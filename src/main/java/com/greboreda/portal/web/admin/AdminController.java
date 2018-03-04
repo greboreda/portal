@@ -2,6 +2,8 @@ package com.greboreda.portal.web.admin;
 
 import com.greboreda.portal.business.login.business.EmailAddressAlreadyInUseException;
 import com.greboreda.portal.business.login.business.LoginServiceCreator;
+import com.greboreda.portal.business.login.business.LoginServiceFinder;
+import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.user.business.UserFinder;
 import com.greboreda.portal.business.user.domain.User;
 import com.greboreda.portal.business.user.domain.role.RoleType;
@@ -15,21 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 @Controller
 public class AdminController {
 
 	private final LoginServiceCreator loginServiceCreator;
+	private final LoginServiceFinder loginServiceFinder;
 	private final UserFinder userFinder;
 
 	@Inject
-	public AdminController(LoginServiceCreator loginServiceCreator, UserFinder userFinder) {
+	public AdminController(LoginServiceCreator loginServiceCreator, LoginServiceFinder loginServiceFinder, UserFinder userFinder) {
 		this.loginServiceCreator = loginServiceCreator;
+		this.loginServiceFinder = loginServiceFinder;
 		this.userFinder = userFinder;
 	}
 
@@ -65,15 +69,22 @@ public class AdminController {
 	}
 
 	private List<ManageableUserDTO> findManageableUsers() {
-		final List<User> all = userFinder.findAll();
-		return all.stream()
-				.map(u -> ManageableUserDTO.create()
-						.withUserId(u.getId().toString())
-						.withCreationDate(u.getCreationDate())
-						.withIsAdmin(u.getRoles().stream().anyMatch(r -> r.getType().equals(RoleType.ADMIN)))
-						.withLoginEmail(u.getLoginService().getEmailAddress().getValue())
-						.build())
-				.collect(toList());
+
+		final List<ManageableUserDTO> manageableUsers = new ArrayList<>();
+
+		for(User user : userFinder.findAll()) {
+			final Optional<LoginService> maybeLoginService = loginServiceFinder.findBy(user.getId());
+			final String email = maybeLoginService.isPresent() ? maybeLoginService.get().getEmailAddress().getValue() : null;
+			final Boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getType().equals(RoleType.ADMIN));
+			final ManageableUserDTO manageableUser = ManageableUserDTO.create()
+					.withUserId(user.getId().toString())
+					.withCreationDate(user.getCreationDate())
+					.withLoginEmail(email)
+					.withIsAdmin(isAdmin)
+					.build();
+			manageableUsers.add(manageableUser);
+		}
+		return manageableUsers;
 	}
 
 }

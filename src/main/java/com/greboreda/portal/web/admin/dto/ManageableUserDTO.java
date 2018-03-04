@@ -8,6 +8,8 @@ public class ManageableUserDTO implements DataTransportObject {
 
 	private static final long serialVersionUID = 2990032901895735104L;
 
+	public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
+
 	public final String userId;
 	public final LocalDateTime creationDate;
 	public final String loginEmail;

@@ -22,7 +22,8 @@ public final class LoginServiceId implements Id {
 		return uuid;
 	}
 
-	public String getValue() {
+	@Override
+	public String toString() {
 		return uuid.toString();
 	}
 

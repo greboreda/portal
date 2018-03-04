@@ -42,9 +42,6 @@ public class UserDBO implements DataBaseObject {
 					updatable = false)})
 	private List<RoleDBO> roles;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "user")
-	private LoginServiceDBO loginService;
-
 	public String getId() {
 		return id;
 	}
@@ -73,11 +70,4 @@ public class UserDBO implements DataBaseObject {
 		return serialVersionUID;
 	}
 
-	public LoginServiceDBO getLoginService() {
-		return loginService;
-	}
-
-	public void setLoginService(LoginServiceDBO loginService) {
-		this.loginService = loginService;
-	}
 }

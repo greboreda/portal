@@ -1,7 +1,5 @@
 package com.greboreda.portal.business.user.business;
 
-import com.greboreda.portal.business.login.domain.LoginService;
-import com.greboreda.portal.business.login.persistence.mapper.LoginServiceMapper;
 import com.greboreda.portal.business.user.domain.User;
 import com.greboreda.portal.business.user.domain.UserId;
 import com.greboreda.portal.business.user.persistence.dao.UserDAO;

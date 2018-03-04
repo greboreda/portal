@@ -19,6 +19,11 @@ public class RoleId implements Id {
 		return uuid;
 	}
 
+	@Override
+	public String toString() {
+		return uuid.toString();
+	}
+
 	public static RoleId fromUUID(UUID uuid) {
 		return new RoleId(uuid);
 	}

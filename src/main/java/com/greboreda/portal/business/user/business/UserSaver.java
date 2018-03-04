@@ -23,7 +23,6 @@ public class UserSaver {
 		Validate.notNull(user.getId());
 		Validate.notNull(user.getCreationDate());
 		Validate.notEmpty(user.getRoles());
-		Validate.notNull(user.getLoginService());
 		userBDAO.save(user);
 	}
 

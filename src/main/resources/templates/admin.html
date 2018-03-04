@@ -3,6 +3,7 @@
 <head>
     <title>portal user</title>
     <link rel="stylesheet" th:href="@{css/bootstrap/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{css/styles.css}" />
     <script th:src="@{js/bootstrap.js}"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" lang="en"/>
 </head>
@@ -11,7 +12,7 @@
     <div th:include="fragments/header"></div>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row top-buffer">
             <div class="col col-lg-3">
                 <div class="card">
                     <div class="card-header">
@@ -44,7 +45,7 @@
                     <tbody>
                         <tr th:each="user : ${adminView.manageableUsers}">
                             <td th:text="${user.userId}"></td>
-                            <td th:text="${user.creationDate}"></td>
+                            <td th:text="${#temporals.format(user.creationDate, user.dateFormat)}"></td>
                             <td th:text="${user.loginEmail}"></td>
                             <td th:text="${user.isAdmin}"></td>
                         </tr>

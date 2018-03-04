@@ -45,7 +45,6 @@ public class LoginServiceCreator {
 				.withId(new UserId())
 				.withCreationDate(now)
 				.withRoles(Roles.get(roleTypes))
-				.withLogin(null)
 				.build();
 
 		userSaver.save(user);

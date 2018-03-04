@@ -5,6 +5,7 @@ import com.greboreda.portal.business.login.domain.LoginServiceId;
 import com.greboreda.portal.business.login.persistence.dao.LoginServiceDAO;
 import com.greboreda.portal.business.login.persistence.dbo.LoginServiceDBO;
 import com.greboreda.portal.business.login.persistence.mapper.LoginServiceMapper;
+import com.greboreda.portal.business.user.domain.UserId;
 import com.greboreda.portal.business.vo.EmailAddress;
 
 import javax.inject.Inject;
@@ -24,6 +25,11 @@ class LoginServiceBDAO {
 
 	Optional<LoginService> findBy(LoginServiceId loginServiceId) {
 		final Optional<LoginServiceDBO> maybeDBO = loginServiceDAO.findById(loginServiceId.getUuid());
+		return maybeDBO.map(LoginServiceMapper::map);
+	}
+
+	Optional<LoginService> findBy(UserId userId) {
+		final Optional<LoginServiceDBO> maybeDBO = loginServiceDAO.findByUserId(userId.getUuid().toString());
 		return maybeDBO.map(LoginServiceMapper::map);
 	}
 

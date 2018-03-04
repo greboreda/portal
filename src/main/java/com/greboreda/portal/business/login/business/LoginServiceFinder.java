@@ -2,6 +2,7 @@ package com.greboreda.portal.business.login.business;
 
 import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.login.domain.LoginServiceId;
+import com.greboreda.portal.business.user.domain.UserId;
 import com.greboreda.portal.business.vo.EmailAddress;
 import org.apache.commons.lang3.Validate;
 
@@ -22,6 +23,11 @@ public class LoginServiceFinder {
 	public Optional<LoginService> findBy(LoginServiceId loginServiceId) {
 		Validate.notNull(loginServiceId);
 		return loginServiceBDAO.findBy(loginServiceId);
+	}
+
+	public Optional<LoginService> findBy(UserId userId) {
+		Validate.notNull(userId);
+		return loginServiceBDAO.findBy(userId);
 	}
 
 	public Optional<LoginService> findBy(EmailAddress emailAddress) {

@@ -1,6 +1,5 @@
 package com.greboreda.portal.business.user.persistence.mapper;
 
-import com.greboreda.portal.business.login.persistence.mapper.LoginServiceMapper;
 import com.greboreda.portal.business.user.domain.User;
 import com.greboreda.portal.business.user.domain.UserId;
 import com.greboreda.portal.business.user.persistence.dbo.UserDBO;
@@ -14,7 +13,6 @@ public class UserMapper {
 				.withId(UserId.fromUUID(UUID.fromString(userDBO.getId())))
 				.withCreationDate(userDBO.getCreationDate())
 				.withRoles(RoleMapper.map(userDBO.getRoles()))
-				.withLogin(LoginServiceMapper.map(userDBO.getLoginService()))
 				.build();
 	}
 
