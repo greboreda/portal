@@ -5,12 +5,12 @@
 <body>
 
     <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-        <a class="navbar-brand" th:text="${#authentication.name}"></a>
+        <a class="navbar-brand" th:text="${#authentication.name}" th:href="@{/home}"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <ul class="navbar-nav mr-auto">
-            <li th:if="${#strings.contains(#authentication.authorities,'admin')}" class="nav-item">
+        <ul class="navbar-nav mr-auto" th:with="admin=${T(com.greboreda.portal.business.user.domain.role.RoleType).ADMIN}">
+            <li th:if="${#strings.contains(#authentication.authorities, admin.getName())}" class="nav-item">
                 <a class="nav-link" th:href="@{/admin}">admin</a>
             </li>
             <li class="nav-item">
