@@ -9,12 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "loginservice")
+@Table(name = "loginservice", uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"userid"})
+})
 public class LoginServiceDBO implements DataBaseObject {
 
 	private static final long serialVersionUID = 8070416712001564721L;
@@ -28,7 +31,7 @@ public class LoginServiceDBO implements DataBaseObject {
 	@Column(nullable = false)
 	private LocalDateTime modificationDate;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, optional = false)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, optional = false)
 	@JoinColumn(name = "userid")
 	private UserDBO user;
 

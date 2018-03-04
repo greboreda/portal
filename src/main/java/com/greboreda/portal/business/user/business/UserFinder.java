@@ -6,6 +6,7 @@ import org.apache.commons.lang3.Validate;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 import java.util.Optional;
 
 @Named
@@ -21,6 +22,11 @@ public class UserFinder {
 	public Optional<User> findBy(UserId userId) {
 		Validate.notNull(userId);
 		return userBDAO.findBy(userId);
+	}
+
+	//TODO esto habría que paginarlo
+	public List<User> findAll() {
+		return userBDAO.findAll();
 	}
 
 }

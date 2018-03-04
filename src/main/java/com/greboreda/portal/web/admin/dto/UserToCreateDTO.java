@@ -1,6 +1,10 @@
-package com.greboreda.portal.web.admin;
+package com.greboreda.portal.web.admin.dto;
 
-public class UserToCreateDTO {
+import com.greboreda.portal.web.DataTransportObject;
+
+public class UserToCreateDTO implements DataTransportObject {
+
+	private static final long serialVersionUID = -42225830280589929L;
 
 	public String email;
 	public String password;

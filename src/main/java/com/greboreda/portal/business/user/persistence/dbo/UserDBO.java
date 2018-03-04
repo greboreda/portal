@@ -1,6 +1,7 @@
 package com.greboreda.portal.business.user.persistence.dbo;
 
 import com.greboreda.portal.business.DataBaseObject;
+import com.greboreda.portal.business.login.persistence.dbo.LoginServiceDBO;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +42,9 @@ public class UserDBO implements DataBaseObject {
 					updatable = false)})
 	private List<RoleDBO> roles;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "user")
+	private LoginServiceDBO loginService;
+
 	public String getId() {
 		return id;
 	}
@@ -62,5 +67,17 @@ public class UserDBO implements DataBaseObject {
 
 	public void setRoles(List<RoleDBO> roles) {
 		this.roles = roles;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public LoginServiceDBO getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(LoginServiceDBO loginService) {
+		this.loginService = loginService;
 	}
 }

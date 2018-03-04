@@ -32,5 +32,6 @@ create table loginservice (
 	emailaddress varchar(256) not null,
 	password varchar(128) not null,
 	constraint fk_user foreign key (userid) references user_(id),
+	constraint unique_user unique (userId),
 	constraint unique_email_address unique (emailaddress)
 );

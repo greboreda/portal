@@ -13,28 +13,43 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col col-lg-3">
-
                 <div class="card">
                     <div class="card-header">
                         Create a new user
                     </div>
                     <div class="card-body">
-
                         <form th:action="@{/user}" th:object="${userToCreate}" th:method="POST">
-
                             <div class="form-group">
                                 <input type="email" th:field="${userToCreate.email}" class="form-control" th:placeholder="Email" />
                             </div>
                             <div class="form-group">
                                 <input type="password" th:field="${userToCreate.password}" class="form-control" th:placeholder="Password" />
                             </div>
-
                             <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Create" type="Submit" th:text="Create"></button>
                         </form>
 
                     </div>
                 </div>
-
+            </div>
+            <div class="col col-lg-9">
+                <table id="manageable-users" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">UserId</th>
+                            <th scope="col">Creation</th>
+                            <th scope="col">email</th>
+                            <th scope="col">admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${adminView.manageableUsers}">
+                            <td th:text="${user.userId}"></td>
+                            <td th:text="${user.creationDate}"></td>
+                            <td th:text="${user.loginEmail}"></td>
+                            <td th:text="${user.isAdmin}"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
