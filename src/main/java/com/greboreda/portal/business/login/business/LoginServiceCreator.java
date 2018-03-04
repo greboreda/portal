@@ -4,6 +4,7 @@ import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.login.domain.LoginServiceId;
 import com.greboreda.portal.business.user.business.UserCreator;
 import com.greboreda.portal.business.user.domain.User;
+import com.greboreda.portal.business.user.domain.role.Role;
 import com.greboreda.portal.business.vo.EmailAddress;
 import com.greboreda.portal.business.vo.Password;
 import org.apache.commons.lang3.Validate;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 @Named
 public class LoginServiceCreator {
@@ -26,13 +28,14 @@ public class LoginServiceCreator {
 		this.userCreator = userCreator;
 	}
 
-	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, String plainPassword) throws EmailAddressAlreadyInUseException {
+	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, String plainPassword, Set<Role> roles) throws EmailAddressAlreadyInUseException {
 		Validate.notNull(emailAddress);
 		Validate.notNull(plainPassword);
+		Validate.notNull(roles);
 
 		validateEmailAddressIsNotInUse(emailAddress);
 
-		final User user = userCreator.createUser(null);
+		final User user = userCreator.createUser(roles);
 		final LocalDateTime now = LocalDateTime.now();
 		final LoginService loginService = LoginService.create()
 				.withId(new LoginServiceId())
