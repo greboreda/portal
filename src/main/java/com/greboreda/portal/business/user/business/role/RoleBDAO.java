@@ -1,6 +1,7 @@
-package com.greboreda.portal.business.user.business;
+package com.greboreda.portal.business.user.business.role;
 
 import com.greboreda.portal.business.user.domain.role.Role;
+import com.greboreda.portal.business.user.domain.role.Role.RoleType;
 import com.greboreda.portal.business.user.persistence.dao.RoleDAO;
 import com.greboreda.portal.business.user.persistence.mapper.RoleMapper;
 
@@ -18,7 +19,8 @@ class RoleBDAO {
 		this.roleDAO = roleDAO;
 	}
 
-	Optional<Role> findRoleByName(String name) {
-		return roleDAO.findRoleByName(name).map(RoleMapper::map);
+	Optional<Role> findRoleBy(RoleType roleType) {
+		return roleDAO.findRoleByName(roleType.getName())
+				.map(RoleMapper::map);
 	}
 }

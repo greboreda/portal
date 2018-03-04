@@ -2,9 +2,11 @@ package com.greboreda.portal.business.login.business;
 
 import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.login.domain.LoginServiceId;
+import com.greboreda.portal.business.user.business.role.RoleFinder;
 import com.greboreda.portal.business.user.business.UserCreator;
 import com.greboreda.portal.business.user.domain.User;
 import com.greboreda.portal.business.user.domain.role.Role;
+import com.greboreda.portal.business.user.domain.role.Role.RoleType;
 import com.greboreda.portal.business.vo.EmailAddress;
 import com.greboreda.portal.business.vo.Password;
 import org.apache.commons.lang3.Validate;
@@ -16,24 +18,33 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toSet;
+
 @Named
 public class LoginServiceCreator {
 
 	private final LoginServiceBDAO loginServiceBDAO;
 	private final UserCreator userCreator;
+	private final RoleFinder roleFinder;
+
 
 	@Inject
-	public LoginServiceCreator(LoginServiceBDAO loginServiceBDAO, UserCreator userCreator) {
+	public LoginServiceCreator(LoginServiceBDAO loginServiceBDAO, UserCreator userCreator, RoleFinder roleFinder) {
 		this.loginServiceBDAO = loginServiceBDAO;
 		this.userCreator = userCreator;
+		this.roleFinder = roleFinder;
 	}
 
-	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, String plainPassword, Set<Role> roles) throws EmailAddressAlreadyInUseException {
+	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, String plainPassword, Set<RoleType> roleTypes) throws EmailAddressAlreadyInUseException {
 		Validate.notNull(emailAddress);
 		Validate.notNull(plainPassword);
-		Validate.notNull(roles);
+		Validate.notNull(roleTypes);
 
 		validateEmailAddressIsNotInUse(emailAddress);
+
+		final Set<Role> roles = roleTypes.stream()
+				.map(roleFinder::findRoleBy)
+				.collect(toSet());
 
 		final User user = userCreator.createUser(roles);
 		final LocalDateTime now = LocalDateTime.now();

@@ -3,18 +3,21 @@ package com.greboreda.portal.business.user.domain.role;
 import com.greboreda.portal.business.Entity;
 import org.apache.commons.lang3.Validate;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class Role implements Entity<RoleId> {
 
 	private static final long serialVersionUID = -7668806501052581972L;
 
 	private final RoleId id;
-	private final String name;
+	private final RoleType type;
 
-	private Role(RoleId id, String name) {
+	private Role(RoleId id, RoleType roleType) {
 		Validate.notNull(id);
-		Validate.notNull(name);
+		Validate.notNull(roleType);
 		this.id = id;
-		this.name = name;
+		this.type = roleType;
 	}
 
 	@Override
@@ -22,8 +25,8 @@ public class Role implements Entity<RoleId> {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public RoleType getType() {
+		return type;
 	}
 
 	public static RoleBuilder create() {
@@ -33,8 +36,8 @@ public class Role implements Entity<RoleId> {
 	public static class RoleBuilder {
 
 		@FunctionalInterface
-		public interface AddName {
-			Builder withName(String name);
+		public interface AddType {
+			Builder withType(RoleType roleType);
 		}
 		@FunctionalInterface
 		public interface Builder {
@@ -45,8 +48,27 @@ public class Role implements Entity<RoleId> {
 
 		}
 
-		public AddName withId(RoleId id) {
-			return name -> () -> new Role(id, name);
+		public AddType withId(RoleId id) {
+			return type -> () -> new Role(id, type);
+		}
+	}
+
+	public enum RoleType {
+		USER("user"),
+		ADMIN("admin");
+		private final String name;
+		RoleType(String name) {
+			this.name = name;
+		}
+		public String getName() {
+			return name;
+		}
+
+		public static RoleType mapByName(String name) {
+			return Arrays.stream(RoleType.values())
+					.filter(rt -> rt.getName().equals(name))
+					.findFirst()
+					.orElseThrow(IllegalArgumentException::new);
 		}
 	}
 }

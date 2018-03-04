@@ -1,6 +1,7 @@
 package com.greboreda.portal.business.user.persistence.mapper;
 
 import com.greboreda.portal.business.user.domain.role.Role;
+import com.greboreda.portal.business.user.domain.role.Role.RoleType;
 import com.greboreda.portal.business.user.domain.role.RoleId;
 import com.greboreda.portal.business.user.persistence.dbo.RoleDBO;
 
@@ -17,7 +18,7 @@ public class RoleMapper {
 		final UUID uuid = UUID.fromString(roleDBO.getId());
 		return Role.create()
 				.withId(RoleId.fromUUID(uuid))
-				.withName(roleDBO.getName())
+				.withType(RoleType.mapByName(roleDBO.getName()))
 				.build();
 	}
 
@@ -30,7 +31,7 @@ public class RoleMapper {
 	public static RoleDBO mapToDBO(Role role) {
 		final RoleDBO roleDBO = new RoleDBO();
 		roleDBO.setId(role.getId().getUuid().toString());
-		roleDBO.setName(role.getName());
+		roleDBO.setName(role.getType().getName());
 		return roleDBO;
 	}
 

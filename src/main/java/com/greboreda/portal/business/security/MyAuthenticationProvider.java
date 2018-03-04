@@ -41,7 +41,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		}
 
 		final List<GrantedAuthority> grantedAuthorities = maybeLoginService.get().getUser().getRoles().stream()
-				.map(r -> new SimpleGrantedAuthority(r.getName()))
+				.map(r -> new SimpleGrantedAuthority(r.getType().getName()))
 				.collect(toList());
 
 		return new UsernamePasswordAuthenticationToken(userName, authentication.getCredentials(), grantedAuthorities);
