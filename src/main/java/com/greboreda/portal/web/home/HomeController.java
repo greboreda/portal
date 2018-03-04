@@ -12,11 +12,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String privateArea(Model model, Principal principal) {
-		final HomeView userView = HomeView.create()
-				.withLoggedUser(principal.getName())
-				.withLogoutUrl("/logout")
-				.build();
-		model.addAttribute("homeView", userView);
 		return "home";
 	}
 

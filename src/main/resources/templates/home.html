@@ -8,20 +8,10 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-        <a class="navbar-brand" th:text="${homeView.loggedUser}"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="${homeView.logoutUrl}">logout</a>
-            </li>
-        </ul>
-    </nav>
+    <div th:include="fragments/header"></div>
 
     <div class="jumbotron">
-        <h1 class="display-4">U r loggedUser in biatch!</h1>
+        <h1 class="display-4">U r logged in biatch!</h1>
     </div>
 
 </body>
