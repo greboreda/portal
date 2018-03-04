@@ -1,7 +1,7 @@
 package com.greboreda.portal.business.user.persistence.mapper;
 
 import com.greboreda.portal.business.user.domain.role.Role;
-import com.greboreda.portal.business.user.domain.role.Role.RoleType;
+import com.greboreda.portal.business.user.domain.role.RoleType;
 import com.greboreda.portal.business.user.domain.role.RoleId;
 import com.greboreda.portal.business.user.persistence.dbo.RoleDBO;
 

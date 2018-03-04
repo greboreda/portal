@@ -3,9 +3,6 @@ package com.greboreda.portal.business.user.domain.role;
 import com.greboreda.portal.business.Entity;
 import org.apache.commons.lang3.Validate;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 public class Role implements Entity<RoleId> {
 
 	private static final long serialVersionUID = -7668806501052581972L;
@@ -53,22 +50,4 @@ public class Role implements Entity<RoleId> {
 		}
 	}
 
-	public enum RoleType {
-		USER("user"),
-		ADMIN("admin");
-		private final String name;
-		RoleType(String name) {
-			this.name = name;
-		}
-		public String getName() {
-			return name;
-		}
-
-		public static RoleType mapByName(String name) {
-			return Arrays.stream(RoleType.values())
-					.filter(rt -> rt.getName().equals(name))
-					.findFirst()
-					.orElseThrow(IllegalArgumentException::new);
-		}
-	}
 }

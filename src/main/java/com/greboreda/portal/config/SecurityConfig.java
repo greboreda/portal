@@ -31,15 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 				.authorizeRequests()
-					.antMatchers( "/home", "/user").hasAuthority("user")
+					.antMatchers( "/home").hasAuthority("user")
 					.anyRequest().authenticated()
-					.antMatchers("/admin").hasAuthority("admin")
+					.antMatchers("/admin/**", "/user/**").hasAuthority("admin")
 					.anyRequest().authenticated()
 					.and()
 				.formLogin()
 					.loginPage("/login")
 					.permitAll()
-					.defaultSuccessUrl("/user")
+					.defaultSuccessUrl("/home")
 				.and()
 				.logout()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

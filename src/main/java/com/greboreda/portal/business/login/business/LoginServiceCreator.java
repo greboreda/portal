@@ -2,11 +2,9 @@ package com.greboreda.portal.business.login.business;
 
 import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.login.domain.LoginServiceId;
-import com.greboreda.portal.business.user.business.role.RoleFinder;
 import com.greboreda.portal.business.user.business.UserCreator;
 import com.greboreda.portal.business.user.domain.User;
-import com.greboreda.portal.business.user.domain.role.Role;
-import com.greboreda.portal.business.user.domain.role.Role.RoleType;
+import com.greboreda.portal.business.user.domain.role.RoleType;
 import com.greboreda.portal.business.vo.EmailAddress;
 import com.greboreda.portal.business.vo.Password;
 import org.apache.commons.lang3.Validate;
@@ -18,21 +16,17 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
-
 @Named
 public class LoginServiceCreator {
 
 	private final LoginServiceBDAO loginServiceBDAO;
 	private final UserCreator userCreator;
-	private final RoleFinder roleFinder;
 
 
 	@Inject
-	public LoginServiceCreator(LoginServiceBDAO loginServiceBDAO, UserCreator userCreator, RoleFinder roleFinder) {
+	public LoginServiceCreator(LoginServiceBDAO loginServiceBDAO, UserCreator userCreator) {
 		this.loginServiceBDAO = loginServiceBDAO;
 		this.userCreator = userCreator;
-		this.roleFinder = roleFinder;
 	}
 
 	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, String plainPassword, Set<RoleType> roleTypes) throws EmailAddressAlreadyInUseException {
@@ -42,11 +36,7 @@ public class LoginServiceCreator {
 
 		validateEmailAddressIsNotInUse(emailAddress);
 
-		final Set<Role> roles = roleTypes.stream()
-				.map(roleFinder::findRoleBy)
-				.collect(toSet());
-
-		final User user = userCreator.createUser(roles);
+		final User user = userCreator.createUser(roleTypes);
 		final LocalDateTime now = LocalDateTime.now();
 		final LoginService loginService = LoginService.create()
 				.withId(new LoginServiceId())

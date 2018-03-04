@@ -13,6 +13,12 @@ module.exports = function(grunt) {
 			login: {
 				files: [{
 					expand: true,
+					cwd: 'node_modules/jquery/dist',
+					src: 'jquery.js',
+					dest: '../static/js/'
+				},
+				{
+					expand: true,
 					cwd: 'src/login',
 					src: '**',
 					dest: '../static/js/'

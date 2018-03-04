@@ -2,7 +2,7 @@ package com.greboreda.portal.web.admin;
 
 import com.greboreda.portal.business.login.business.EmailAddressAlreadyInUseException;
 import com.greboreda.portal.business.login.business.LoginServiceCreator;
-import com.greboreda.portal.business.user.domain.role.Role.RoleType;
+import com.greboreda.portal.business.user.domain.role.RoleType;
 import com.greboreda.portal.business.vo.EmailAddress;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.Set;
 
 @Controller
 public class AdminController {
@@ -41,7 +42,8 @@ public class AdminController {
 		final EmailAddress email = new EmailAddress(userToCreate.email);
 
 		try {
-			loginServiceCreator.createLoginServiceForNewUser(email, userToCreate.password, Collections.singleton(RoleType.USER));
+			final Set<RoleType> roleTypes = Collections.singleton(RoleType.USER);
+			loginServiceCreator.createLoginServiceForNewUser(email, userToCreate.password, roleTypes);
 		} catch (EmailAddressAlreadyInUseException e) {
 			return "admin";
 		}
