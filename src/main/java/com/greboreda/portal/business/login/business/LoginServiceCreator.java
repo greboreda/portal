@@ -9,8 +9,8 @@ import com.greboreda.portal.business.user.domain.UserId;
 import com.greboreda.portal.business.user.domain.role.RoleType;
 import com.greboreda.portal.business.vo.EmailAddress;
 import com.greboreda.portal.business.vo.Password;
+import com.greboreda.portal.business.vo.PlainPassword;
 import org.apache.commons.lang3.Validate;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -32,7 +32,7 @@ public class LoginServiceCreator {
 		this.userSaver = userSaver;
 	}
 
-	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, String plainPassword, Set<RoleType> roleTypes) throws EmailAddressAlreadyInUseException {
+	public LoginService createLoginServiceForNewUser(EmailAddress emailAddress, PlainPassword plainPassword, Set<RoleType> roleTypes) throws EmailAddressAlreadyInUseException {
 		Validate.notNull(emailAddress);
 		Validate.notNull(plainPassword);
 		Validate.notNull(roleTypes);
@@ -55,7 +55,7 @@ public class LoginServiceCreator {
 				.withCreationDate(now)
 				.withModificationDate(now)
 				.withEmailAddress(emailAddress)
-				.withPassword(new Password(BCrypt.hashpw(plainPassword, BCrypt.gensalt())))
+				.withPassword(new Password(plainPassword))
 				.build();
 
 		loginServiceBDAO.save(loginService);

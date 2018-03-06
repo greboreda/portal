@@ -3,6 +3,7 @@ package com.greboreda.portal.business.security;
 import com.greboreda.portal.business.login.business.LoginPerformer;
 import com.greboreda.portal.business.login.domain.LoginService;
 import com.greboreda.portal.business.vo.EmailAddress;
+import com.greboreda.portal.business.vo.PlainPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,12 +33,17 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		final String password = authentication.getCredentials().toString();
 
 		if(!EmailAddress.isValidEmailAddress(userName)) {
-			throw new UsernameNotFoundException(userName);
+			throw new BadCredentialsException("not valid credentials");
+		}
+		if(!PlainPassword.isValidPlainPassword(password)) {
+			throw new BadCredentialsException("not valid credentials");
 		}
 
-		final Optional<LoginService> maybeLoginService = loginPerformer.doLogin(new EmailAddress(userName), password);
+		final EmailAddress emailAddress = new EmailAddress(userName);
+		final PlainPassword plainPassword = new PlainPassword(password);
+		final Optional<LoginService> maybeLoginService = loginPerformer.doLogin(emailAddress, plainPassword);
 		if(!maybeLoginService.isPresent()) {
-			throw new BadCredentialsException("Can't do login with credentials");
+			throw new BadCredentialsException("not valid credentials");
 		}
 
 		final List<GrantedAuthority> grantedAuthorities = maybeLoginService.get().getUser().getRoles().stream()

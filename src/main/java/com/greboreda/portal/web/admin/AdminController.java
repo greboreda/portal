@@ -8,6 +8,7 @@ import com.greboreda.portal.business.user.business.UserFinder;
 import com.greboreda.portal.business.user.domain.User;
 import com.greboreda.portal.business.user.domain.role.RoleType;
 import com.greboreda.portal.business.vo.EmailAddress;
+import com.greboreda.portal.business.vo.PlainPassword;
 import com.greboreda.portal.web.admin.dto.ManageableUserDTO;
 import com.greboreda.portal.web.admin.dto.UserToCreateDTO;
 import org.springframework.stereotype.Controller;
@@ -55,12 +56,16 @@ public class AdminController {
 		if(!EmailAddress.isValidEmailAddress(userToCreate.email)) {
 			return "admin";
 		}
+		if(!PlainPassword.isValidPlainPassword(userToCreate.password)) {
+			return "admin";
+		}
 
 		final EmailAddress email = new EmailAddress(userToCreate.email);
+		final PlainPassword plainPassword = new PlainPassword(userToCreate.password);
 
 		try {
 			final Set<RoleType> roleTypes = Collections.singleton(RoleType.USER);
-			loginServiceCreator.createLoginServiceForNewUser(email, userToCreate.password, roleTypes);
+			loginServiceCreator.createLoginServiceForNewUser(email, plainPassword, roleTypes);
 		} catch (EmailAddressAlreadyInUseException e) {
 			return "admin";
 		}
