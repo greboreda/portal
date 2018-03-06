@@ -19,6 +19,7 @@ public class Password implements ValueObject {
 	}
 
 	public Boolean matchesWith(PlainPassword plainPassword) {
+		Validate.notNull(plainPassword);
 		return BCrypt.checkpw(plainPassword.getValue(), value);
 	}
 
